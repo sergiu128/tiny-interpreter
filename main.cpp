@@ -1,8 +1,17 @@
-#include <iostream>
+#include "lexer.h"
 
-using namespace std;
+#include <iostream>
+#include <string>
+
 
 int main()
 {
-    cout << "hello world" << endl;
+    std::string inputExpression;
+    std::cin >> inputExpression;
+
+    Lexer lexer(inputExpression);
+    auto token = lexer.GetNextToken();
+    token->_debug();
+
+    return 0;
 }

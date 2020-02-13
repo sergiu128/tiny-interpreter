@@ -9,6 +9,8 @@ class Operand : public Ast
 {
 public:
     Operand(Token const&);
+
+    void _debug() const;
 private:
     Token const& mToken;
 };

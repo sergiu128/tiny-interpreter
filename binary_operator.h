@@ -7,6 +7,8 @@ class BinaryOperator : public Ast
 {
 public:
     BinaryOperator(Ast const&, Token const&, Ast const&);
+
+    void _debug() const;
 private:
     Ast const& mLeft;
     Token const& mOperator;

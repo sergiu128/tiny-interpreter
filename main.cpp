@@ -1,4 +1,4 @@
-#include "lexer.h"
+#include "parser.h"
 
 #include <iostream>
 #include <string>
@@ -7,11 +7,15 @@
 int main()
 {
     std::string inputExpression;
-    std::cin >> inputExpression;
+    getline(std::cin, inputExpression);
 
-    Lexer lexer(inputExpression);
-    auto token = lexer.GetNextToken();
-    token->_debug();
+    auto lexer = std::unique_ptr<Lexer>(new Lexer(inputExpression));
+
+    while (lexer->HasMoreTokens())
+    {
+        auto token = lexer->GetNextToken();
+        std::cout << token->GetValue() << std::endl;
+    }
 
     return 0;
 }

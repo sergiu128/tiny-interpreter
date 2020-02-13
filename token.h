@@ -1,19 +1,24 @@
 #pragma once
 
-#include "common.h"
+enum class TokenType 
+{
+    DIGIT,
+    LPAREN,
+    RPAREN,
+    PLUS,
+    MINUS,
+    MULTIPLY,
+    DIVIDE
+};
 
 class Token
 {
 public:
     Token(TokenType, char);
 
-    Token(Token&&);
+    TokenType GetType() const;
 
-    TokenType GetType();
-
-    char GetValue();
-
-    void _debug();
+    char GetValue() const;
 private:
     TokenType mType;
     char mValue;

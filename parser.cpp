@@ -49,8 +49,8 @@ std::unique_ptr<Ast> Parser::term()
     while (mCurrentToken->GetType() == MULTIPLY || mCurrentToken->GetType() == DIVIDE)
     {
         mToken = mCurrentToken;
-        if (mToken->GetType() == MULITPLY)
-            consume(MULIPLY);
+        if (mToken->GetType() == MULTIPLY)
+            consume(MULTIPLY);
         else if (mToken->GetType() == DIVIDE)
             consume(DIVIDE);
 

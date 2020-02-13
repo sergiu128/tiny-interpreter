@@ -6,12 +6,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 project(TinyInterpreter)
 
-add_executable(TinyInterpreter 
+add_executable(
+    TinyInterpreter 
+    
+    ## LEXER
     token.h token.cpp
     lexer.h lexer.cpp
-    ast.h 
-    operand.h operand.cpp 
-    binary_operator.h binary_operator.cpp
-    parser.h parser.cpp
-    common.h
+
+    ##
     main.cpp)

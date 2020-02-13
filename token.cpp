@@ -1,27 +1,16 @@
 #include "token.h"
-#include <iostream>
 
 Token::Token(TokenType type, char value) :
     mType(type),
     mValue(value)
 {}
 
-Token::Token(Token&& token) :
-    mType(std::move(token.mType)),
-    mValue(std::move(token.mValue))
-{}
-
-void Token::_debug()
-{
-    std::cout << mType << " "  << mValue << std::endl;
-}
-
-TokenType Token::GetType() 
+TokenType Token::GetType() const
 {
     return mType;
 }
 
-char Token::GetValue()
+char Token::GetValue() const
 {
     return mValue;
 }

@@ -1,68 +1,57 @@
 #include "lexer.h"
 
 #include <cctype>
+#include <iostream>
 
 Lexer::Lexer(std::string const& expression) : 
     mExpression(expression),
     mIndex(0)
 {
     if (expression.length() == 0)
-        throw "Zero length input invalid";
-    
-    mCurrentChar = mExpression[mIndex];
-}
-
-void Lexer::Advance()
-{
-    mIndex += 1;
-    if (mIndex > mExpression.length())
-        mCurrentChar = 0;
-    else mCurrentChar = mExpression[mIndex];
-}
-
-void Lexer::SkipWhitespace()
-{
-    while (mCurrentChar != 0 && isspace(mCurrentChar)) 
-        Advance();
+        throw "Invalid input: cannot accept zero length strings.";
 }
 
 std::unique_ptr<Token> Lexer::GetNextToken()
 {
-    while (mCurrentChar != 0)
-    {
-        if (isspace(mCurrentChar)) 
-        {
-            SkipWhitespace();
-            continue;
-        }
+    if (!HasMoreTokens())
+        return nullptr;
 
-        if (isdigit(mCurrentChar))
-        {
-            return std::unique_ptr<Token>(new Token(DIGIT, mCurrentChar));
-        }
+    std::unique_ptr<Token> token;
 
-        switch (mCurrentChar)
-        {
-            case '+':
-                return std::unique_ptr<Token>(new Token(PLUS, mCurrentChar));
-                break;
-            case '-':
-                return std::unique_ptr<Token>(new Token(MINUS, mCurrentChar));
-                break;
-            case '*':
-                return std::unique_ptr<Token>(new Token(MULTIPLY, mCurrentChar));
-                break;
-            case '/':
-                return std::unique_ptr<Token>(new Token(DIVIDE, mCurrentChar));
-                break;
-            case '(':
-                return std::unique_ptr<Token>(new Token(LPAREN, mCurrentChar));
-                break;
-            case ')':
-                return std::unique_ptr<Token>(new Token(RPAREN, mCurrentChar));
-                break;
+    if (isspace(mExpression[mIndex]))
+        SkipWhitespace();
 
-            throw "Invalid character.";
-        }
-    }
+    auto currentChar = mExpression[mIndex];
+    if (isdigit(currentChar))
+        token = std::unique_ptr<Token>(new Token(TokenType::DIGIT, currentChar));
+    else if (currentChar == '+')
+        token = std::unique_ptr<Token>(new Token(TokenType::PLUS, currentChar));
+    else if (currentChar == '-')
+        token = std::unique_ptr<Token>(new Token(TokenType::MINUS, currentChar));
+    else if (currentChar == '*')
+        token = std::unique_ptr<Token>(new Token(TokenType::MULTIPLY, currentChar));
+    else if (currentChar == '/')
+        token = std::unique_ptr<Token>(new Token(TokenType::DIVIDE, currentChar));
+    else if (currentChar == '(')
+        token = std::unique_ptr<Token>(new Token(TokenType::LPAREN, currentChar));
+    else if (currentChar == ')')
+        token = std::unique_ptr<Token>(new Token(TokenType::RPAREN, currentChar));
+    else throw "Invalid input.";
+
+    mIndex += 1;
+
+    return token;
+}
+
+bool Lexer::HasMoreTokens()
+{
+    if (mIndex >= mExpression.length()) 
+        return false;
+    return true;
+}
+
+void Lexer::SkipWhitespace()
+{
+    while (mIndex < mExpression.length() && isspace(mExpression[mIndex])) 
+        mIndex += 1;
 }

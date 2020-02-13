@@ -1,24 +1,27 @@
 #pragma once
 
 #include "token.h"
-#include "common.h"
 
 #include <string>
 #include <memory>
 
+/**
+ * A lexer tokenizes the given input string.
+ * The token are to be requested one by one
+ * through the GetNextToken() API call.
+ */
 class Lexer
 {
 public:
     Lexer(std::string const&);
 
-    void Advance();
-
-    void SkipWhitespace();
-
     std::unique_ptr<Token> GetNextToken();
 
+    bool HasMoreTokens();
+
 private:
+    void SkipWhitespace();
+
     std::string const& mExpression;
     int mIndex;
-    char mCurrentChar;
 };

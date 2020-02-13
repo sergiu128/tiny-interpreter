@@ -15,6 +15,8 @@ class Tree
 {
 public:
     virtual char GetValue() const = 0;
+
+    virtual ~Tree() {}
 };
 
 
@@ -30,11 +32,12 @@ public:
             char,
             std::unique_ptr<Tree>);
 
+    std::unique_ptr<Tree> mLeft;
+    std::unique_ptr<Tree> mRight;
+
     char GetValue() const;
 private:
-    std::unique_ptr<Tree> mLeft;
     char mOperator;
-    std::unique_ptr<Tree> mRight;
 };
 
 
@@ -48,6 +51,7 @@ public:
     Digit(int);
 
     char GetValue() const;
+
 private:
     int mValue;
 };

@@ -18,4 +18,7 @@ add_executable(
     parser.h parser.cpp
 
     ## INTERPRETER
+    interpreter.h interpreter.cpp
+
+    ##
     main.cpp)

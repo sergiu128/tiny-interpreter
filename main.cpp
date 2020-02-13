@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "interpreter.h"
 
 #include <iostream>
 #include <string>
@@ -11,7 +11,9 @@ int main()
 
     Lexer lexer(inputExpression);
     Parser parser(lexer);
-    auto tree = parser.parse();
+    Interpreter interpreter(parser);
+    int ret = interpreter.Interpret();
+    std::cout << ret << std::endl;
 
     return 0;
 }

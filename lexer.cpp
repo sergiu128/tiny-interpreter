@@ -1,14 +1,20 @@
 #include "lexer.h"
 
 #include <cctype>
-#include <iostream>
+#include <stdexcept>
 
 Lexer::Lexer(std::string const& expression) : 
     mExpression(expression),
     mIndex(0)
 {
     if (expression.length() == 0)
-        throw "Invalid input: cannot accept zero length strings.";
+        throw std::runtime_error("Invalid input: cannot accept zero length strings.");
+
+    for (int i = 0, j = 1; j < expression.length(); i++, j++)
+    {
+        if (isdigit(expression[i]) && isdigit(expression[j]))
+            throw std::runtime_error("Invalid input, literal is too large");
+    }
 }
 
 std::unique_ptr<Token> Lexer::NextToken()
@@ -36,7 +42,7 @@ std::unique_ptr<Token> Lexer::NextToken()
         token = std::unique_ptr<Token>(new Token(TokenType::LPAREN, currentChar));
     else if (currentChar == ')')
         token = std::unique_ptr<Token>(new Token(TokenType::RPAREN, currentChar));
-    else throw "Invalid input.";
+    else throw std::runtime_error("Invalid input.");
 
     mIndex += 1;
 

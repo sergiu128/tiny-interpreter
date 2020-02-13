@@ -1,7 +1,7 @@
 #include "parser.h"
 
+#include <stdexcept>
 #include <cstdlib>
-#include <iostream>
 
 Parser::Parser(Lexer& lexer) :
     mLexer(lexer),
@@ -12,7 +12,7 @@ std::unique_ptr<Tree> Parser::parse()
 {
     if (mLexer.HasMoreTokens())
         mCurrentToken = mLexer.NextToken();
-    else throw "Invalid input.";
+    else throw std::runtime_error("Invalid input.");
 
     return evalWeakExpr();
 }
@@ -89,7 +89,7 @@ char Parser::consume(TokenType type)
 {
     if (mCurrentToken->GetType() != type)
     {
-        throw "Invalid syntax.";
+        throw std::runtime_error("Invalid syntax.");
     }
     else
     {

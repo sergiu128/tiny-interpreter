@@ -17,7 +17,7 @@ public:
 
 private:
     /**
-     * The taxonomy an input expression is broken down in:
+     * The taxonomy of an input expression is broken down in:
      *
      * weakExpr:    strongExpr ((PLUS | MINUS) strongExpr)*
      * strongExpr:  token ((MULTIPLY | DIVIDE) token)*

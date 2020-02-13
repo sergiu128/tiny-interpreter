@@ -11,7 +11,7 @@ Lexer::Lexer(std::string const& expression) :
         throw "Invalid input: cannot accept zero length strings.";
 }
 
-std::unique_ptr<Token> Lexer::GetNextToken()
+std::unique_ptr<Token> Lexer::NextToken()
 {
     if (!HasMoreTokens())
         return nullptr;
@@ -43,7 +43,7 @@ std::unique_ptr<Token> Lexer::GetNextToken()
     return token;
 }
 
-bool Lexer::HasMoreTokens()
+bool Lexer::HasMoreTokens() const
 {
     if (mIndex >= mExpression.length()) 
         return false;

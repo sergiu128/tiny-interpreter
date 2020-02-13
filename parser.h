@@ -11,7 +11,7 @@
 class Parser
 {
 public:
-    Parser(std::unique_ptr<Lexer>);
+    Parser(Lexer&);
 
     std::unique_ptr<Tree> parse();
 
@@ -33,7 +33,9 @@ private:
     std::unique_ptr<Tree> evalWeakExpr();
     std::unique_ptr<Tree> evalStrongExpr();
     std::unique_ptr<Tree> evalToken();
+    
+    char consume(TokenType);
 
-    std::unique_ptr<Lexer> mLexer;
+    Lexer& mLexer;
     std::unique_ptr<Token> mCurrentToken;
 };

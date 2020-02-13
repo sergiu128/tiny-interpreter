@@ -17,5 +17,5 @@ add_executable(
     tree.h tree.cpp
     parser.h parser.cpp
 
-    ##
+    ## INTERPRETER
     main.cpp)

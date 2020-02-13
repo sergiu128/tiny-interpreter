@@ -3,12 +3,6 @@
 #include <memory>
 
 /**
- * The operators are the abstract syntax tree's 
- * internal nodes.
- */
-enum class Operator { PLUS, MINUS, MULTIPLY, DIVIDE };
-
-/**
  * A (abstract syntax) tree contains operators
  * (+,-,/,*) as internal nodes and digits ([0-9])
  * as leaves. Given a valid input, a tree
@@ -19,6 +13,8 @@ enum class Operator { PLUS, MINUS, MULTIPLY, DIVIDE };
  */
 class Tree
 {
+public:
+    virtual char GetValue() const = 0;
 };
 
 
@@ -31,12 +27,13 @@ class BinOpTree : public Tree
 public:
     BinOpTree(
             std::unique_ptr<Tree>,
-            Operator,
+            char,
             std::unique_ptr<Tree>);
 
+    char GetValue() const;
 private:
     std::unique_ptr<Tree> mLeft;
-    Operator mOperator;
+    char mOperator;
     std::unique_ptr<Tree> mRight;
 };
 
@@ -49,6 +46,8 @@ class Digit : public Tree
 {
 public:
     Digit(int);
+
+    char GetValue() const;
 private:
     int mValue;
 };

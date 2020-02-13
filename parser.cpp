@@ -1,26 +1,101 @@
 #include "parser.h"
 
-Parser::Parser(std::unique_ptr<Lexer> lexer) :
-    mLexer(std::move(lexer)),
+#include <cstdlib>
+#include <iostream>
+
+Parser::Parser(Lexer& lexer) :
+    mLexer(lexer),
     mCurrentToken(nullptr)
 {}
 
 std::unique_ptr<Tree> Parser::parse()
 {
-    return nullptr;
+    if (mLexer.HasMoreTokens())
+        mCurrentToken = mLexer.NextToken();
+    else throw "Invalid input.";
+
+    return evalWeakExpr();
 }
 
 std::unique_ptr<Tree> Parser::evalToken()
 {
-    return nullptr;
+    if (mCurrentToken == nullptr)
+        return nullptr;
+
+    std::unique_ptr<Tree> node = nullptr;
+    if (mCurrentToken->GetType() == TokenType::DIGIT)
+    {
+        auto value = consume(TokenType::DIGIT);
+        node = std::unique_ptr<Tree>(new Digit(value - '0'));
+    }
+    else if (mCurrentToken->GetType() == TokenType::LPAREN)
+    {
+        consume(TokenType::LPAREN);
+        node = evalWeakExpr();
+        // expecting a right parenthesis - if not, throw.
+        consume(TokenType::RPAREN);
+    }
+
+    return node;
 }
 
 std::unique_ptr<Tree> Parser::evalStrongExpr()
 {
-    return nullptr;
+    auto tree = evalToken();
+
+    while (mCurrentToken != nullptr
+            && (mCurrentToken->GetType() == TokenType::MULTIPLY
+                || mCurrentToken->GetType() == TokenType::DIVIDE))
+    {
+        char value;
+        if (mCurrentToken->GetType() == TokenType::MULTIPLY)
+            value = consume(TokenType::MULTIPLY);
+        else value = consume(TokenType::DIVIDE);
+
+        tree = std::unique_ptr<Tree>(
+                new BinOpTree(
+                    std::move(tree),
+                    value,
+                    std::move(evalToken())));
+    }
+
+    return tree;
 }
 
 std::unique_ptr<Tree> Parser::evalWeakExpr()
 {
-    return nullptr;
+    auto tree = evalStrongExpr();
+
+    while (mCurrentToken != nullptr
+            && (mCurrentToken->GetType() == TokenType::PLUS
+                || mCurrentToken->GetType() == TokenType::MINUS))
+    {
+        char value;
+        if (mCurrentToken->GetType() == TokenType::PLUS)
+            value = consume(TokenType::PLUS);
+        else value = consume(TokenType::MINUS);
+
+        tree = std::unique_ptr<Tree>(
+                new BinOpTree(
+                    std::move(tree),
+                    value,
+                    std::move(evalStrongExpr())));
+    }
+
+    return tree;
+}
+
+char Parser::consume(TokenType type)
+{
+    if (mCurrentToken->GetType() != type)
+    {
+        throw "Invalid syntax.";
+    }
+    else
+    {
+        auto value = mCurrentToken->GetValue();
+        mCurrentToken = mLexer.NextToken();
+
+        return value;
+    }
 }

@@ -16,9 +16,9 @@ class Lexer
 public:
     Lexer(std::string const&);
 
-    std::unique_ptr<Token> GetNextToken();
+    std::unique_ptr<Token> NextToken();
 
-    bool HasMoreTokens();
+    bool HasMoreTokens() const;
 
 private:
     void SkipWhitespace();

@@ -8,7 +8,8 @@
 /**
  * A lexer tokenizes the given input string.
  * The token are to be requested one by one
- * through the GetNextToken() API call.
+ * through the GetNextToken() API call, while
+ * there are still tokens present in the input.
  */
 class Lexer
 {

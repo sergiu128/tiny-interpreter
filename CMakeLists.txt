@@ -13,5 +13,9 @@ add_executable(
     token.h token.cpp
     lexer.h lexer.cpp
 
+    ## PARSER
+    tree.h tree.cpp
+    parser.h parser.cpp
+
     ##
     main.cpp)
